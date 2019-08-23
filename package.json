@@ -17,5 +17,13 @@
   "devDependencies": {
     "@vechain/connex": "1.4.0",
     "typescript": "3.5.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AsbertMa/thor-tracer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AsbertMa/thor-tracer/issues"
+  },
+  "homepage": "https://github.com/AsbertMa/thor-tracer#readme"
 }
