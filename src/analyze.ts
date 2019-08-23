@@ -1,35 +1,35 @@
 export class Analyze {
   private connex: Connex
-  private tokens: string[]
+  // base opts
+  private contracts: string[]
   private address: string[]
   private monitorVet: boolean
-  private transferFilters: Analyze.transferFilter[]
-  private eventFilters: Analyze.eventFilter[] // Only one filter for now.
+  private monitorEvent: boolean
+  // advanced opts
+  private transferFilter?: Analyze.transferFilter | null
+  private eventFilter?: Analyze.eventFilter | null
 
   constructor(opts: Analyze.options, connex: Connex) {
-    this.tokens = (opts.filter.tokens && opts.filter.tokens.length)
-      ? opts.filter.tokens.map(item => { return item.toLowerCase() })
-      : []
+    this.connex = connex
 
+    this.contracts = (opts.filter.contracts && opts.filter.contracts.length)
+      ? opts.filter.contracts.map(item => { return item.toLowerCase() })
+      : []
     this.address = (opts.filter.address && opts.filter.address.length)
       ? opts.filter.address.map(item => { return item.toLowerCase() })
       : []
 
-    this.monitorVet = opts.filter.vet
-    this.connex = connex
-    this.eventFilters = []
-    this.transferFilters = []
+    this.monitorVet = opts.filter.transfer || true
+    this.monitorEvent = opts.filter.event || true
 
-    if (this.address.length) {
-      this.transferFilters.push((item) => {
-        return this.address.indexOf(item.recipient) >= 0 || this.address.indexOf(item.sender) >= 0
-      })
-    }
-    if (this.tokens.length) {
-      this.eventFilters.push((item) => {
-        return this.tokens.indexOf(item.address) >= 0
-      })
-    }
+    this.transferFilter = this.address.length ? (item) => {
+      return this.address.indexOf(item.sender) >= 0
+        || this.address.indexOf(item.recipient) >= 0
+    } : null
+
+    this.eventFilter = this.contracts.length ? (item) => {
+      return this.contracts.indexOf(item.address) >= 0
+    } : null
   }
 
   public async block(blockId: string): Promise<Analyze.blockResult | null> {
@@ -61,10 +61,25 @@ export class Analyze {
     if (receipt) {
       for (const item of receipt.outputs) {
         if (this.monitorVet) {
-          transferList = [...item.transfers.filter(this.transferFilters[0]), ...transferList]
+          transferList = [
+            ...(
+              this.transferFilter
+                ? item.transfers.filter(this.transferFilter)
+                : item.transfers
+            ),
+            ...transferList
+          ]
         }
-        if (this.eventFilters.length) {
-          eventList = [...item.events.filter(this.eventFilters[0]), ...eventList]
+
+        if (this.monitorEvent) {
+          eventList = [
+            ...(
+              this.eventFilter
+                ? item.events.filter(this.eventFilter)
+                : item.events
+            ),
+            ...eventList
+          ]
         }
       }
     }
@@ -89,11 +104,11 @@ export class Analyze {
 export namespace Analyze {
   export type options = {
     filter: {
-      vet: boolean
-      tokens?: string[]
+      transfer?: boolean
+      event?: boolean
+      contracts?: string[]
       address?: string[]
     }
-    // eventFilters?: eventFilter[]
   }
 
   export type txResult = {
