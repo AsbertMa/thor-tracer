@@ -1,0 +1,20 @@
+{
+  "name": "thor-tracer",
+  "version": "0.0.1",
+  "description": "trace thor txs",
+  "main": "./dist",
+  "scripts": {
+    "build": "tsc -p .",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Asbert Ma <stayinalive@msn.cn>",
+  "license": "MIT",
+  "dependencies": {
+    "eventemitter3": "4.0.0"
+  },
+  "devDependencies": {
+    "@vechain/connex": "1.4.0",
+    "typescript": "3.5.3"
+  }
+}
