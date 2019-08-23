@@ -19,8 +19,8 @@ export class Analyze {
       ? opts.filter.address.map(item => { return item.toLowerCase() })
       : []
 
-    this.monitorVet = opts.filter.transfer || true
-    this.monitorEvent = opts.filter.event || true
+    this.monitorVet = opts.filter.transfer === undefined ? true : opts.filter.transfer
+    this.monitorEvent = opts.filter.event === undefined ? true : opts.filter.event
 
     this.transferFilter = this.address.length ? (item) => {
       return this.address.indexOf(item.sender) >= 0
