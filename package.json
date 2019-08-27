@@ -1,12 +1,11 @@
 {
   "name": "thor-tracer",
-  "version": "0.0.1",
-  "description": "trace thor txs",
+  "version": "1.0.1",
+  "description": "Depends on Connex; analyzing block, base on address (contract address) of filter by you custom condition.",
   "main": "./dist",
-  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p .",
-    "install": "npm run build",
+    "build": "rm -rf dist/; tsc -p .",
+    "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Asbert Ma <stayinalive@msn.cn>",
@@ -25,5 +24,12 @@
   "bugs": {
     "url": "https://github.com/AsbertMa/thor-tracer/issues"
   },
-  "homepage": "https://github.com/AsbertMa/thor-tracer#readme"
+  "homepage": "https://github.com/AsbertMa/thor-tracer#readme",
+  "keywords": [
+    "thor",
+    "vechain",
+    "connex",
+    "trace",
+    "analyze"
+  ]
 }
