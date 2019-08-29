@@ -103,7 +103,6 @@ export class Analyze {
   }
 }
 
-
 export namespace Analyze {
   export type options = {
     filter: {
