@@ -41,7 +41,7 @@ export class Tracer {
       }
     }
 
-    const confirmedBlocks: string[] = result.find((item: any) => {
+    const confirmedBlocks: string[] = result.filter((item: any) => {
       return item.confirm >= this.checkNum
     }).map((item:any) => {
       return item.blockId
