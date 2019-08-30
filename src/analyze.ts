@@ -116,13 +116,13 @@ export namespace Analyze {
   }
 
   export type txResult = {
-    events: Array<Connex.Thor.Event & { txId: string }>,
+    events: Array<Connex.Thor.Event & { txId: string }>
     transfers: Array<Connex.Thor.Transfer & { txId: string }>
   }
 
   export type blockResult = {
     blockId: string
-    events: Analyze.txResult['events'],
+    events: Analyze.txResult['events']
     transfers: Analyze.txResult['transfers']
   }
 
