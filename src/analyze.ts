@@ -1,10 +1,11 @@
 export class Analyze {
   private connex: Connex
-  // base opts
+
   private contracts: string[]
   private address: string[]
   private monitorVet: boolean
   private monitorEvent: boolean
+
   // advanced opts
   private transferFilter?: Analyze.transferFilter | null
   private eventFilter?: Analyze.eventFilter | null
@@ -22,14 +23,16 @@ export class Analyze {
     this.monitorVet = opts.filter.transfer !== false ? true : false
     this.monitorEvent = opts.filter.event !== false ? true : false
 
-    this.transferFilter = this.address.length ? (item) => {
-      return this.address.indexOf(item.sender) >= 0
-        || this.address.indexOf(item.recipient) >= 0
-    } : null
+    this.transferFilter = (typeof opts.transferFilter === 'function')
+      ? opts.transferFilter : this.address.length ? (item) => {
+        return this.address.indexOf(item.sender) >= 0
+          || this.address.indexOf(item.recipient) >= 0
+      } : null
 
-    this.eventFilter = this.contracts.length ? (item) => {
-      return this.contracts.indexOf(item.address) >= 0
-    } : null
+    this.eventFilter = (typeof opts.eventFilter === 'function')
+      ? opts.eventFilter : this.contracts.length ? (item) => {
+        return this.contracts.indexOf(item.address) >= 0
+      } : null
   }
 
   public async block(blockId: string): Promise<Analyze.blockResult | null> {
@@ -100,7 +103,6 @@ export class Analyze {
   }
 }
 
-
 export namespace Analyze {
   export type options = {
     filter: {
@@ -109,6 +111,8 @@ export namespace Analyze {
       contracts?: string[]
       address?: string[]
     }
+    transferFilter?: Analyze.transferFilter
+    eventFilter?: Analyze.eventFilter
   }
 
   export type txResult = {

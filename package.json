@@ -1,6 +1,6 @@
 {
   "name": "thor-tracer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Depends on Connex; analyzing block, base on address (contract address) of filter by you custom condition.",
   "main": "./dist",
   "scripts": {
