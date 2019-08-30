@@ -26,14 +26,14 @@ export class Tracer {
   }
 
   private async checkBlock(headNum: number) {
-    const result: any = []
-    for (const blockId of this.blocksQ) {
-      const bv = this.connex.thor.block(blockId)
+    const result: Tracer.confirmed[] = []
+    for (const id of this.blocksQ) {
+      const bv = this.connex.thor.block(id)
       const block = await bv.get()
       if (block) {
         result.push(
           {
-            blockId: blockId,
+            blockID: id,
             isTrunk: block!.isTrunk,
             confirm: headNum - block!.number
           }
@@ -41,10 +41,10 @@ export class Tracer {
       }
     }
 
-    const confirmedBlocks: string[] = result.filter((item: any) => {
+    const confirmedBlocks: string[] = result.filter((item: Tracer.confirmed) => {
       return item.confirm >= this.checkNum
-    }).map((item:any) => {
-      return item.blockId
+    }).map((item: Tracer.confirmed) => {
+      return item.blockID
     }) || []
 
     this.blocksQ = this.blocksQ.filter(item => {
@@ -80,5 +80,13 @@ export class Tracer {
 
   public stop() {
     this.isStop = true
+  }
+}
+
+export namespace Tracer {
+  export type confirmed = {
+    blockID: string
+    isTrunk: boolean,
+    confirm: number
   }
 }
