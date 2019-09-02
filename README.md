@@ -1,6 +1,6 @@
 # thor-tracer
 
-Depends on Connex; analyzing block, base on address (contract address) of filter by you custom condition.
+A simple tracer depends on Connex; analyzing block/tx, filter events/transfers by address(contract address) or you custom condition/filter.
 
 ## Usage
 
